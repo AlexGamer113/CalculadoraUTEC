@@ -6,6 +6,7 @@ namespace CalculadoraUTEC
         double segundoNumero = 0;
         string operacion = "";
         bool trackingOperacion = false;
+        bool hayOperacionPendiente = false;
 
         public Form1()
         {
@@ -14,7 +15,7 @@ namespace CalculadoraUTEC
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            
+            txtPantalla.ReadOnly = true;
         }
 
         private void btnUno_Click(object sender, EventArgs e)
@@ -30,21 +31,51 @@ namespace CalculadoraUTEC
             txtPantalla.Text += boton.Text;
         }
 
+
         private void btnSuma_Click(object sender, EventArgs e)
         {
-            primerNumero = Convert.ToDouble(txtPantalla.Text);
             Button boton = (Button)sender;
+
+
+            if (lblHistorial.Text.Contains("="))
+            {
+                lblHistorial.Text = primerNumero.ToString() + " " + boton.Text + " ";
+            }
+            else if (hayOperacionPendiente && !trackingOperacion)
+            {
+                lblHistorial.Text += txtPantalla.Text + " " + boton.Text + " ";
+                EjecutarOperacion();
+            }
+            else if (!trackingOperacion)
+            {
+                lblHistorial.Text = txtPantalla.Text + " " + boton.Text + " ";
+                primerNumero = Convert.ToDouble(txtPantalla.Text);
+            }
+            else
+            {
+                lblHistorial.Text = lblHistorial.Text.Substring(0, lblHistorial.Text.Length - 2) + boton.Text + " ";
+            }
+
             operacion = boton.Text;
             trackingOperacion = true;
-            lblHistorial.Text = primerNumero.ToString() + " " + operacion;
+            hayOperacionPendiente = true;
         }
 
         private void btnResultado_Click(object sender, EventArgs e)
         {
+            if (!hayOperacionPendiente) return;
+
+            lblHistorial.Text += txtPantalla.Text + " =";
+
+            EjecutarOperacion();
+
+            hayOperacionPendiente = false;
+        }
+
+        private void EjecutarOperacion()
+        {
             segundoNumero = Convert.ToDouble(txtPantalla.Text);
             double resultado = 0;
-
-            lblHistorial.Text += " " + segundoNumero.ToString() + " =";
 
             switch (operacion)
             {
@@ -66,9 +97,12 @@ namespace CalculadoraUTEC
                     {
                         MessageBox.Show("No se puede dividir por cero", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         txtPantalla.Text = "0";
+                        btnBorrar_Click(null, null);
                         return;
                     }
                     break;
+                default:
+                    return;
             }
 
             txtPantalla.Text = resultado.ToString();
@@ -82,8 +116,23 @@ namespace CalculadoraUTEC
             segundoNumero = 0;
             operacion = "";
             trackingOperacion = false;
+            hayOperacionPendiente = false;
             txtPantalla.Text = "0";
             lblHistorial.Text = "";
         }
+
+        private void btnVolver_Click_1(object sender, EventArgs e)
+        {
+            Form2 calculadoraGuia = new Form2();
+            calculadoraGuia.StartPosition = FormStartPosition.Manual;
+            calculadoraGuia.Location = this.Location;
+            calculadoraGuia.Show();
+            this.Hide();
+        }
+        protected override void OnFormClosing(FormClosingEventArgs e)
+        {
+            base.OnFormClosing(e);
+            Application.Exit();
+        }
     }
-}
+};

@@ -48,6 +48,7 @@
             btnPunto = new Button();
             btnSuma = new Button();
             lblHistorial = new Label();
+            btnVolver = new Button();
             SuspendLayout();
             // 
             // txtPantalla
@@ -56,6 +57,7 @@
             txtPantalla.Font = new Font("Segoe UI", 15.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
             txtPantalla.Location = new Point(27, 54);
             txtPantalla.Name = "txtPantalla";
+            txtPantalla.ReadOnly = true;
             txtPantalla.Size = new Size(229, 28);
             txtPantalla.TabIndex = 0;
             txtPantalla.TextAlign = HorizontalAlignment.Right;
@@ -266,21 +268,32 @@
             // 
             // lblHistorial
             // 
-            lblHistorial.AutoSize = true;
             lblHistorial.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
             lblHistorial.ForeColor = SystemColors.ButtonShadow;
-            lblHistorial.Location = new Point(209, 34);
+            lblHistorial.Location = new Point(27, 34);
             lblHistorial.Name = "lblHistorial";
             lblHistorial.RightToLeft = RightToLeft.No;
-            lblHistorial.Size = new Size(0, 17);
+            lblHistorial.Size = new Size(229, 17);
             lblHistorial.TabIndex = 18;
             lblHistorial.TextAlign = ContentAlignment.MiddleRight;
+            // 
+            // btnVolver
+            // 
+            btnVolver.Location = new Point(27, 276);
+            btnVolver.Name = "btnVolver";
+            btnVolver.Size = new Size(229, 23);
+            btnVolver.TabIndex = 19;
+            btnVolver.Text = "Regresar";
+            btnVolver.UseVisualStyleBackColor = true;
+            btnVolver.Click += btnVolver_Click_1;
             // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
+            BackColor = SystemColors.Control;
             ClientSize = new Size(292, 304);
+            Controls.Add(btnVolver);
             Controls.Add(lblHistorial);
             Controls.Add(btnSuma);
             Controls.Add(btnPunto);
@@ -331,5 +344,6 @@
         private Button btnPunto;
         private Button btnSuma;
         private Label lblHistorial;
+        private Button btnVolver;
     }
 }
